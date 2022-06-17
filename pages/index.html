@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bite</title>
+    <link rel="shortcut icon" type="image/ico" href="favicon.ico">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@100;400;900&display=swap" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/kute.js@2.1.2/dist/kute.min.js"></script>
+    <style>
+
+      h1 {
+        font-size: 4rem;
+      }
+
+      img {
+        border-radius: 50%;
+        border: 5px solid white;
+      }
+
+      input[type=text] {
+        width: 100%;
+        padding: 12px 20px;
+        margin: 8px 0;
+        box-sizing: border-box;
+        border: none;
+        border-radius: 15px;
+        background-color: white;
+        color: black;
+        opacity: 1.0;
+      }
+
+      textarea {
+        width: 100%;
+        height:200px;
+        padding: 12px 20px;
+        margin: 8px 0;
+        box-sizing: border-box;
+        border: none;
+        box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.5);
+        border-radius: 15px;
+        background-color: transparent;
+        color: black;
+        opacity: 1;
+      }
+
+      button {
+        margin-top: 10px;
+        margin-bottom: 10px;
+        background-color: #4CAF50;
+        border: none;
+        color: white;
+        padding: 8px 16px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 15px;
+        border-radius: 15px;
+        cursor: pointer;
+        z-index: 100;
+      }
+
+      button span {
+        cursor: pointer;
+        display: inline-block;
+        position: relative;
+      }
+
+      p {
+        font-size: 1.5rem;
+      }
+
+      body {
+        margin: 0;
+        font-family: 'Prompt', sans-serif;
+        color: white;
+        background: #202731;
+        overflow-x: hidden;
+      }
+
+      section {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        min-height: 400px;
+        padding-top: 100px;
+      }
+
+      .blue {
+        background: #3c31dd;
+      }
+
+      .red {
+        background: #dd3f31;
+      }
+
+      .pink {
+        background: #ff0066;
+        overflow: hidden;
+      }
+
+      .dark {
+        background: #0f0f10;
+      }
+
+      /* Curved bg with plain CSS */
+
+      .curve {
+        position: absolute;
+        height: 250px;
+        width: 100%;
+        bottom: 0;
+        text-align: center;
+      }
+
+      .curve::before {
+        content: '';
+        display: block;
+        position: absolute;
+        border-radius: 100% 50%;
+        width: 55%;
+        height: 100%;
+        transform: translate(85%, 60%);
+        background-color: hsl(216, 21%, 16%);
+      }
+
+      .curve::after {
+        content: '';
+        display: block;
+        position: absolute;
+        border-radius: 100% 50%;
+        width: 55%;
+        height: 100%;
+        background-color: #3c31dd;
+        transform: translate(-4%, 40%);
+        z-index: -1;
+      }
+
+      .wave {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        overflow: hidden;
+        line-height: 0;
+      }
+
+      .wave svg {
+        position: relative;
+        display: block;
+        width: calc(103% + 1.3px);
+        height: 262px;
+      }
+
+      .wave .shape-fill {
+        fill: hsl(240, 3%, 6%);
+      }
+
+      .spacer {
+        aspect-ratio: 960/300;
+        width: 100%;
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: cover;
+      }
+
+      .layer1 {
+        background-image: url('./layer1.svg');
+      }
+      .layer2 {
+        background-image: url('./layer2.svg');
+      }
+
+      .flip {
+        transform: rotate(180deg);
+      }
+      
+    </style>
+  </head>
+  <body>
+    <section class="blue">
+      <h1 style="align: center; margin: 20px">Shrink URL</h1>
+        <form style="width: 70%; z-index: 1">
+          <input type="text" id="input_text" name="ip_txt" value="" placeholder="paste here...">
+        </form>
+        <div style = "display: flex; justify-content:flex-end">
+          <button onclick="getShortURL()"><span>Generate</span></button>
+        </div>
+        <script>
+          function getShortURL() {
+            let Http = new XMLHttpRequest();
+            let input_text = document.getElementById("input_text").value;
+            if (input_text.length == 0) {
+              alert("Please enter a URL");
+            } else {
+               let url='https://bite.deta.dev/shrink?url='+input_text;
+               Http.open("GET", url, true);
+               Http.send();
+               Http.onreadystatechange = (e) => {
+               navigator.clipboard.writeText(Http.responseText);
+              }
+            }
+          }
+        </script>
+      <form style="z-index: 1; width: auto">
+        <textarea name="text" id="output_text" rows="1" cols="100" wrap="soft" readonly style="height: 30%"> </textarea>
+      </form>
+      <div class="curve"></div>
+    </section>
+    <div class="spacer layer1"></div>
+  </body>
+</html>

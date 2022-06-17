@@ -1,0 +1,3 @@
+git+https://github.com/jnsougata/async-deta
+fastapi
+jinja2
