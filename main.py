@@ -1,4 +1,5 @@
-import random
+import secrets
+import string
 import fastapi
 from asyncdeta import Deta, Field
 from fastapi.staticfiles import StaticFiles
@@ -10,6 +11,7 @@ from fastapi.responses import HTMLResponse, JSONResponse, PlainTextResponse, Red
 app = fastapi.FastAPI()
 app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"])
 deta = Deta("c0pid2se_XRCwFqcrCXTEXJZpoyt45yMHvhkDfVFQ")
+KEY_LENGTH = 10
 
 pages = Jinja2Templates(directory="pages")
 
@@ -23,7 +25,7 @@ async def home(request: fastapi.Request):
 async def shrink(url: str = fastapi.Query(None)):
     await deta.connect()
     base = deta.base("DB")
-    key = random.randbytes(4).hex()
+    key = ''.join(secrets.choice(string.ascii_lowercase) for i in range(KEY_LENGTH))
     await base.put(key=key, field=Field(name="redirect", value=url))
     return fastapi.responses.PlainTextResponse(f'https://bite.deta.dev/{key}', status_code=200)
 
