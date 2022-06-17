@@ -1,18 +1,17 @@
-import secrets
 import string
+import secrets
 import fastapi
+from fastapi.responses import *
 from asyncdeta import Deta, Field
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import HTMLResponse, JSONResponse, PlainTextResponse, RedirectResponse, Response
 
 
 app = fastapi.FastAPI()
 app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"])
 deta = Deta("c0pid2se_XRCwFqcrCXTEXJZpoyt45yMHvhkDfVFQ")
 KEY_LENGTH = 10
-
 pages = Jinja2Templates(directory="pages")
 
 
