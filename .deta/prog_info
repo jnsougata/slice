@@ -1,1 +1,0 @@
-{"id":"eb3bfbcf-4ac2-4014-839b-6a2579290c8f","space":4864,"runtime":"python3.9","name":"link-shortner","path":"4mu4aj","project":"c0pid2se","account":"144798365827","region":"ap-southeast-1","deps":["git+https://github.com/jnsougata/async-deta","fastapi","jinja2"],"envs":null,"public":true,"log_level":"off","cron":""}
