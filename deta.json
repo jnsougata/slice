@@ -1,0 +1,5 @@
+{
+    "name": "slice",
+    "description": "a simple url shortener",
+    "runtime": "python3.9"
+}
