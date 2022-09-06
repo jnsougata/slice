@@ -5,6 +5,7 @@ from pydantic import BaseModel
 from micro import Micro
 from micro.responses import *
 from micro.requests import Request
+from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from fastapi.middleware.cors import CORSMiddleware
 
