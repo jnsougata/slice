@@ -14,7 +14,7 @@ function notify(message, color) {
   setTimeout(() => { snackbar.classList.remove("show"); }, 3000);
 }
 
-function sliceURL() {
+function shortenURL() {
   let isValid = true;
   let target = document.getElementById("input").value;
 
