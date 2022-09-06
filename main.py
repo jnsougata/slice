@@ -18,6 +18,7 @@ class ShrinkRequest(BaseModel):
 
 micro = Micro()
 micro.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"])
+micro.mount('/static', StaticFiles(directory='static'), name='static')
 
 
 @micro.get("/", response_class=HTMLResponse)
