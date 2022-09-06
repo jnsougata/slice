@@ -5,6 +5,7 @@ from pydantic import BaseModel
 from micro import Micro
 from micro.responses import *
 from micro.requests import Request
+from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -18,6 +19,7 @@ class ShrinkRequest(BaseModel):
 
 micro = Micro()
 micro.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"])
+micro.mount('/static', StaticFiles(directory='static'), name='static')
 
 
 @micro.get("/", response_class=HTMLResponse)
