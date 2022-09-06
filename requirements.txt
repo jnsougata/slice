@@ -1,3 +1,3 @@
-jinja2
-requests
-git+https://github.com/jnsougata/deta-micro
+pydantic
+fastapi
+https://github.com/jnsougata/deta-micro
