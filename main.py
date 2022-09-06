@@ -1,6 +1,5 @@
 import os
 import secrets
-import requests
 import string
 from pydantic import BaseModel
 from micro import Micro
