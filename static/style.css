@@ -88,6 +88,7 @@ a,u {
   left: 0;
   background-color: rgb(42, 168, 80);
   width: 100%;
+  height: auto;
 }
 
 #banner-content {
