@@ -31,11 +31,6 @@ async def ping(request: Request):
     return JSONResponse({"message": "pong"})
 
 
-@micro.cron
-def cron(event: dict):
-    return requests.get("https://digit.deta.dev/ping").json()
-    
-
 @micro.post("/shrink")
 async def shrink(shrink_request: ShrinkRequest, request: Request):
     target = shrink_request.target
