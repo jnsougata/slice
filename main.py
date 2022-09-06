@@ -1,40 +1,58 @@
-import string
+import os
 import secrets
-import fastapi
-from fastapi.responses import *
-from asyncdeta import Deta, Field
-from fastapi.staticfiles import StaticFiles
+import requests
+import string
+from pydantic import BaseModel
+from micro import Micro
+from micro.responses import *
+from micro.requests import Request
 from fastapi.templating import Jinja2Templates
 from fastapi.middleware.cors import CORSMiddleware
 
 
-app = fastapi.FastAPI()
-app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"])
-deta = Deta("c0pid2se_XRCwFqcrCXTEXJZpoyt45yMHvhkDfVFQ")
-KEY_LENGTH = 10
 pages = Jinja2Templates(directory="pages")
 
 
-@app.get("/", response_class=HTMLResponse)
-async def home(request: fastapi.Request):
+class ShrinkRequest(BaseModel):
+    target: str
+
+
+micro = Micro()
+micro.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"])
+
+
+@micro.get("/", response_class=HTMLResponse)
+async def home(request: Request):
     return pages.TemplateResponse("index.html", {"request": request})
 
 
-@app.get("/shrink")
-async def shrink(url: str = fastapi.Query(None)):
-    await deta.connect()
-    base = deta.base("DB")
-    key = ''.join(secrets.choice(string.ascii_lowercase) for i in range(KEY_LENGTH))
-    await base.put(key=key, field=Field(name="redirect", value=url))
-    return fastapi.responses.PlainTextResponse(f'https://bite.deta.dev/{key}', status_code=200)
+@micro.get("/ping", response_class=JSONResponse)
+async def ping(request: Request):
+    return JSONResponse({"message": "pong"})
 
 
-@app.get("/{redirect_id}")
+@micro.cron
+def cron(event: dict):
+    return requests.get("https://digit.deta.dev/ping").json()
+    
+
+@micro.post("/shrink")
+async def shrink(shrink_request: ShrinkRequest, request: Request):
+    target = shrink_request.target
+    if not target:
+        return RedirectResponse("/")
+    if not micro.deta:
+        return PlainTextResponse("/")
+    key = secrets.token_urlsafe(5)
+    micro.deta.Base("SHRINK").put(data={"url": target}, key=key)
+    return {"url": f"{request.url.scheme}://{request.url.hostname}/{key}"}
+
+
+@micro.get("/{redirect_id}")
 async def redirect(redirect_id: str):
-    await deta.connect()
-    base = deta.base("DB")
-    redirect_payload = await base.fetch(key=redirect_id)
-    if redirect_payload:
-        return fastapi.responses.RedirectResponse(redirect_payload["redirect"])
-    else:
-        return fastapi.responses.JSONResponse({"error": "url does not exist"}, status_code=404)
+    resp = micro.deta.Base(name="SHRINK").get(str(redirect_id))
+    if resp:
+        return RedirectResponse(resp.get("url") or "/")
+    return RedirectResponse("/")
+
+app = micro.export
