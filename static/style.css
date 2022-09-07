@@ -1,3 +1,8 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
 input[type=text] {
   outline: none;
   width: 100%;
@@ -32,9 +37,11 @@ button span {
 }
 
 body {
-  font-family: 'Prompt', sans-serif;
+  margin: 0;
   color: white;
   background: black;
+  font-family: 'Prompt', sans-serif;
+  overflow-y: hidden;
 }
 
 #snackbar {
@@ -77,22 +84,31 @@ a,u {
   color: #4c8bf5;
 }
 
-* {
-  margin: 0;
-  padding: 0;
+.main {
+  display: flex;
+  height: 100vh;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 }
 
-#banner {
-  position: absolute;
-  top: 0;
-  left: 0;
+.main-content {
+  width: 70%;
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+}
+
+.banner {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
   background-color: rgb(42, 168, 80);
-  width: 100%;
-  height: auto;
+  align-content: center;
 }
 
-#banner-content {
-  width: 100%;
-  margin: auto;
-  text-align: center;
+.banner-content {
+  padding: 5px;
 }
+
