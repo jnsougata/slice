@@ -1,7 +1,3 @@
-"""
-ABC
-"""
-
 import os
 import secrets
 import string
